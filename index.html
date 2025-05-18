@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#50C878" />
+  <title>Travella – Your Travel Phrasebook</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body x-data="phrasebookApp()" x-init="init()">
+
+  <!-- NAVIGATION -->
+  <nav class="navbar glass">
+    <div class="navbar__brand">
+      <h1 class="navbar__title">🌐 Travella</h1>
+      <div class="navbar__subtitle">Your Pocket Travel Buddy ✈️</div>
+    </div>
+    <button class="theme-toggle" @click="toggleTheme()" aria-label="Toggle Theme">🌓</button>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero glass">
+    <h2 class="hero__title">Travel with Ease &amp; Joy 🌍</h2>
+    <p class="hero__tagline">
+      Instant access to essential travel phrases in your chosen language and travel type.
+    </p>
+    <a href="#step-section" class="btn-glass hero__cta">Start Now</a>
+  </header>
+
+  <!-- FEATURE FLASHCARDS -->
+  <section id="features" class="features glass">
+    <h2 class="section__title">What Can You Do with Travella?</h2>
+    <div class="card-grid">
+      <div class="card card--feature glass">
+        <h3 class="card__title">✈️ Smart Phrase Selection</h3>
+        <p class="card__desc">
+          Choose from travel types like tourism, business, or emergency.
+        </p>
+      </div>
+      <div class="card card--feature glass">
+        <h3 class="card__title">🈳 Multilingual Support</h3>
+        <p class="card__desc">
+          Explore essential phrases in 15+ languages with native script.
+        </p>
+      </div>
+      <div class="card card--feature glass">
+        <h3 class="card__title">📋 Easy Copy &amp; Share</h3>
+        <p class="card__desc">
+          Copy single or full phrasebooks with a tap.
+        </p>
+      </div>
+      <div class="card card--feature glass">
+        <h3 class="card__title">💬 Instant Phrasebook</h3>
+        <p class="card__desc">
+          Dynamically generated, no internet required once loaded.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE APP SECTION -->
+  <main id="step-section" class="app-section">
+    <!-- Step 1 -->
+    <template x-if="currentStep === 1">
+      <section class="glass step step--travel">
+        <h2 class="step__title">Select Your Travel Type</h2>
+        <div class="grid grid--options">
+          <template x-for="travel in travelTypes" :key="travel.id">
+            <button class="btn btn--option" @click="selectTravel(travel.id); nextStep()">
+              <span x-text="travel.emoji"></span>
+              <span x-text="travel.name"></span>
+            </button>
+          </template>
+        </div>
+      </section>
+    </template>
+
+    <!-- Step 2 -->
+    <template x-if="currentStep === 2">
+      <section class="glass step step--language">
+        <h2 class="step__title">Select Language</h2>
+        <div class="grid grid--options">
+          <template x-for="language in languages" :key="language.id">
+            <button class="btn btn--option" @click="selectLanguage(language.id); generatePhrasebook()">
+              <span x-text="language.flag"></span>
+              <span x-text="language.name"></span>
+            </button>
+          </template>
+        </div>
+        <button class="btn back-btn step__back" @click="previousStep()">🔙 Back</button>
+      </section>
+    </template>
+
+    <!-- Step 3 -->
+    <template x-if="currentStep === 3">
+      <section class="glass step step--phrasebook">
+        <h2 class="step__title" x-text="getTravelName() + ' - ' + getLanguageName()"></h2>
+        <div class="phrase-list">
+          <template x-for="category in phrasebook" :key="category.category">
+            <div class="phrase-category">
+              <h3 class="phrase-category__title" x-text="category.category"></h3>
+              <ul class="phrase-category__list">
+                <template x-for="phrase in category.phrases" :key="phrase.english">
+                  <li class="phrase-category__item">
+                    <strong x-text="phrase.english"></strong>:
+                    <span x-text="phrase.translation"></span>
+                    <button class="phrase-category__copy btn--copy" @click="copyToClipboard(phrase.translation)">
+                      📋
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn--primary" @click="copyAllPhrases()">📋 Copy All</button>
+          <button class="btn btn--secondary" @click="resetForm()">🔄 Start Over</button>
+        </div>
+      </section>
+    </template>
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div x-show="showToast" class="toast glass" aria-live="polite" x-text="toastMessage"></div>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top glass" @click="backToTop()" aria-label="Back to Top">⬆️</button>
+
+  <!-- FOOTER -->
+  <footer class="footer glass footer--info">
+    <div class="footer__content">
+      <div class="footer__brand">
+        🌐 Travella — Making Every Phrase Count 💬
+      </div>
+      <div class="footer__contact">
+        <p>Created by <strong>Trupti Parsai</strong></p>
+        <p>Email: <a href="mailto:truptiparsai2@gmail.com">truptiparsai2@gmail.com</a></p>
+      </div>
+      <div class="footer__copyright">
+        © 2025 Travella. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script src="js/phrases.js"></script>
+  <script src="js/download.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

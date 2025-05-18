@@ -1,0 +1,16 @@
+.phrase-category {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+    animation-delay: calc(var(--animation-delay) * 0.1s);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
